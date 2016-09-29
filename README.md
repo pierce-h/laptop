@@ -61,6 +61,8 @@ Unix tools:
 * [The Silver Searcher] for finding things in files
 * [Tmux] for saving project state and switching between projects
 * [Zsh] as your shell
+* [HTTPie] a CLI, cURL-like tool for humans
+* [HTOP] as your shell
 
 [Exuberant Ctags]: http://ctags.sourceforge.net/
 [Git]: https://git-scm.com/
@@ -69,6 +71,8 @@ Unix tools:
 [The Silver Searcher]: https://github.com/ggreer/the_silver_searcher
 [Tmux]: http://tmux.github.io/
 [Zsh]: http://www.zsh.org/
+[HTTPie]: https://github.com/jkbrzt/httpie
+[HTOP]: https://hisham.hm/htop/
 
 Heroku tools:
 
@@ -83,9 +87,10 @@ GitHub tools:
 
 [Hub]: http://hub.github.com/
 
-Image tools:
+Image, Video, & Audio tools:
 
 * [ImageMagick] for cropping and resizing images
+* [FFmpeg] to record, convert and stream audio and video.
 
 Testing tools:
 
@@ -103,6 +108,7 @@ Programming languages and configuration:
 
 [Bundler]: http://bundler.io/
 [ImageMagick]: http://www.imagemagick.org/
+[FFmpeg]: https://www.ffmpeg.org/
 [Node.js]: http://nodejs.org/
 [NPM]: https://www.npmjs.org/
 [Rbenv]: https://github.com/sstephenson/rbenv
