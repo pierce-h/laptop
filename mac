@@ -109,6 +109,8 @@ brew "the_silver_searcher"
 brew "tmux"
 brew "vim"
 brew "zsh"
+brew "httpie"
+brew "htop"
 
 # Heroku
 brew "heroku-toolbelt"
@@ -119,6 +121,7 @@ brew "hub"
 
 # Image manipulation
 brew "imagemagick"
+brew "ffmpeg"
 
 # Testing
 brew "qt"
