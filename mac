@@ -7,24 +7,20 @@ fancy_echo() {
   printf "\n$fmt\n" "$@"
 }
 
-# append_to_zshrc() {
-#   local text="$1" zshrc
-#   local skip_new_line="${2:-0}"
+append_to_bash_profile() {
+  local text="$1" bash_profile
+  local skip_new_line="${2:-0}"
 
-#   if [ -w "$HOME/.zshrc.local" ]; then
-#     zshrc="$HOME/.zshrc.local"
-#   else
-#     zshrc="$HOME/.zshrc"
-#   fi
+  bash_profile="$HOME/.bash_profile"
 
-#   if ! grep -Fqs "$text" "$zshrc"; then
-#     if [ "$skip_new_line" -eq 1 ]; then
-#       printf "%s\n" "$text" >> "$zshrc"
-#     else
-#       printf "\n%s\n" "$text" >> "$zshrc"
-#     fi
-#   fi
-# }
+  if ! grep -Fqs "$text" "$bash_profile"; then
+    if [ "$skip_new_line" -eq 1 ]; then
+      printf "%s\n" "$text" >> "$bash_profile"
+    else
+      printf "\n%s\n" "$text" >> "$bash_profile"
+    fi
+  fi
+}
 
 # shellcheck disable=SC2154
 trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
@@ -35,12 +31,13 @@ if [ ! -d "$HOME/.bin/" ]; then
   mkdir "$HOME/.bin"
 fi
 
-# if [ ! -f "$HOME/.zshrc" ]; then
-#   touch "$HOME/.zshrc"
-# fi
+# add 2 spaces to doc
+defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'
+defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'
+killall Dock
 
 # shellcheck disable=SC2016
-# append_to_zshrc 'export PATH="$HOME/.bin:$PATH"'
+append_to_bash_profile 'export PATH="$HOME/.bin:$PATH"'
 
 HOMEBREW_PREFIX="/usr/local"
 
@@ -53,14 +50,6 @@ else
   sudo chflags norestricted "$HOMEBREW_PREFIX"
   sudo chown -R "$LOGNAME:admin" "$HOMEBREW_PREFIX"
 fi
-
-case "$SHELL" in
-  */zsh) : ;;
-  *)
-    fancy_echo "Changing your shell to zsh ..."
-      chsh -s "$(which zsh)"
-    ;;
-esac
 
 gem_install_or_update() {
   if gem list "$1" --installed > /dev/null; then
@@ -76,10 +65,10 @@ if ! command -v brew >/dev/null; then
     curl -fsS \
       'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
 
-    append_to_zshrc '# recommended by brew doctor'
+    append_to_bash_profile '# recommended by brew doctor'
 
     # shellcheck disable=SC2016
-    append_to_zshrc 'export PATH="/usr/local/bin:$PATH"' 1
+    append_to_bash_profile 'export PATH="/usr/local/bin:$PATH"' 1
 
     export PATH="/usr/local/bin:$PATH"
 fi
@@ -94,6 +83,7 @@ brew update
 brew bundle --file=- <<EOF
 tap "thoughtbot/formulae"
 tap "homebrew/services"
+tap "caskroom/cask"
 
 # Unix
 brew "ctags"
@@ -129,7 +119,6 @@ brew "rbenv"
 brew "ruby-build"
 
 # Databases
-brew "postgres", restart_service: true
 brew "redis", restart_service: true
 EOF
 
@@ -143,7 +132,7 @@ ruby_version="$(find_latest_ruby)"
 
 # shellcheck disable=SC2016
 
-append_to_zshrc 'eval "$(rbenv init - --no-rehash)"' 1
+append_to_bash_profile 'eval "$(rbenv init - --no-rehash)"' 1
 
 eval "$(rbenv init -)"
 
@@ -157,9 +146,3 @@ gem update --system
 gem_install_or_update 'bundler'
 number_of_cores=$(sysctl -n hw.ncpu)
 bundle config --global jobs $((number_of_cores - 1))
-
-if [ -f "$HOME/.laptop.local" ]; then
-  fancy_echo "Running your customizations from ~/.laptop.local ..."
-  # shellcheck disable=SC1090
-  . "$HOME/.laptop.local"
-fi
