@@ -53,9 +53,8 @@ Unix tools:
 * [RCM] for managing company and personal dotfiles
 * [The Silver Searcher] for finding things in files
 * [Tmux] for saving project state and switching between projects
-* [Zsh] as your shell
 * [HTTPie] a CLI, cURL-like tool for humans
-* [HTOP] as your shell
+* [HTOP] an interactive process viewer for Unix
 
 [Exuberant Ctags]: http://ctags.sourceforge.net/
 [Git]: https://git-scm.com/
